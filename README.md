@@ -39,6 +39,15 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
 ```
 
 ## .init() (options)
+다음과 같이 옵션값을 변경할 수 있다.
+
+```html
+  <script>
+    // JKUIT.carousel(container, options)
+    var banner=new JKUIT.carousel('#carousel',{duration: 200, autoplay: false, pagination: '.btnBullet'});
+  </script>
+</body>
+```
 
 |Name|Description|Default|
 | ---- | ---- | ---- |
@@ -56,18 +65,18 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
 |pagination|레이아웃(상단 html 참조)|'.carousel-pagination-bullet'|
 
 ## .render(onNum, nextNum, type)
-slide animation 함수.
-onNum은 현재 slide page 값(start 0),
-nextNum은 이동할 slide page 값(start 0),
+slide animation 함수. <br>
+onNum은 현재 slide page 값(start 0), <br>
+nextNum은 이동할 slide page 값(start 0), <br>
 type은 방향을 나타내는 문자열("next", "prev")이다. 
 
 ## .event()
-pagination click, next button click, prev button click, play button click, stop button click, slide area mouse enter&leave - event를 모와둠
+event bind fn(pagination click, next button click, prev button click, play button click, stop button click, slide area mouse enter&leave)
 
 ## .clickRender(type, nextNum)
-click 함수에 사용하는 slide render 함수
-type은 방향을 나타내는 문자열("next", "prev"),
-nextNum은 특정 영역으로 이동할 경우 slide page 값(start 0)을 넣고,
+click 함수에 사용하는 slide render 함수<br>
+type은 방향을 나타내는 문자열("next", "prev"),<br>
+nextNum은 특정 영역으로 이동할 경우 slide page 값(start 0)을 넣고,<br>
 생략하면 type에 따른 방향으로 한칸 이동한다.
 
 ## .play(), .stop()
