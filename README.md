@@ -27,6 +27,7 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
       </li>
       ...
     </ul>
+    <div class="carousel-timer-bar"></div>
   </div>
 
   <script src="http://i.jobkorea.kr/content/js/jquery-1.11.1.min.js"></script>
@@ -54,7 +55,7 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
 |timerDur|타이머 인터벌 시간|5000|
 |duration|슬라이드 동작 시간|300||
 |autoplay|자동 슬라이드(boolean)|true|
-|timerBar|자동 슬라이드 타이머(boolean, 미구현)|false|
+|viewTimerBar|슬라이드 타이머 바(boolean)|false|
 |slideHover|슬라이드 영역 마우스 오버시 오토슬라이드 오프(boolean)|true|
 |wrapper|레이아웃(상단 html 참조)|'.carousel-wrapper'|
 |slide|레이아웃(상단 html 참조)|'.carousel-slide'|
@@ -63,6 +64,7 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
 |nextButton|레이아웃(상단 html 참조)|'.carousel-btn-next'|
 |prevButton|레이아웃(상단 html 참조)|'.carousel-btn-prev'|
 |pagination|레이아웃(상단 html 참조)|'.carousel-pagination-bullet'|
+|timerBar|레이아웃(상단 html 참조)|'.carousel-timer-bar'|
 
 ## .render(onNum, nextNum, type)
 slide animation 함수. <br>
