@@ -6,7 +6,7 @@
 	} else if (typeof exports === 'object') {
 		module.exports = factory;
 	} else {
-		root.JKUIT = factory(root);
+		root.JKUIT = root.JKUIT || {}, root.JKUIT=$.extend(root.JKUIT, factory(root));
 	}
 })(this, function (root) {
 
@@ -27,7 +27,7 @@
 			timerDur : 5000,
 			duration : 300,
 			autoplay : true,
-			timerBar : false,
+			viewTimerBar : false,
 			slideHover : true,
 			wrapper : '.carousel-wrapper',
 			slide : '.carousel-slide',
@@ -35,7 +35,8 @@
 			stopButton : '.carousel-btn-stop',
 			nextButton : '.carousel-btn-next',
 			prevButton : '.carousel-btn-prev',
-			pagination : '.carousel-pagination-bullet'
+			pagination : '.carousel-pagination-bullet',
+			timerBar : '.carousel-timer-bar'
 		};
 		var c = this,
 			slideTimer,
@@ -49,6 +50,11 @@
 			$nextButton = $container.find(o.nextButton),
 			$prevButton = $container.find(o.prevButton),
 			$pagination = $container.find(o.pagination);
+
+		if (o.viewTimerBar) {
+
+			var $timerBar = $container.find(o.timerBar);
+		}
 
 		function nextNumber(num, type) {
 			if (type == "next") {
@@ -85,6 +91,9 @@
 			if (o.autoplay) {
 				$playButton.addClass('on');
 				$stopButton.removeClass('on');
+				if (o.viewTimerBar) {
+					$timerBar.stop().css('width', 0).animate({'width': '100%'}, o.timerDur);
+				}
 				slideTimer = setTimeout(function(){c.render(0, nextNumber(0, "next"), "next")}, o.timerDur);
 			} else {
 				$playButton.removeClass('on');
@@ -139,11 +148,23 @@
 			hoverSlide : function() {
 				$slide.on('mouseenter.hoverSlide', function() {
 					clearTimeout(slideTimer);
+					if (o.viewTimerBar) {
+						$timerBar.stop();
+					}
 				});
 				$slide.on('mouseleave.hoverSlide', function() {
 					if (o.autoplay) {
-						var onIndex = $wrapper.find(o.slide+'.on').index();
-						slideTimer = setTimeout(function(){c.render(onIndex, nextNumber(onIndex, "next"), "next")}, o.timerDur/2);
+						var onIndex = $wrapper.find(o.slide+'.on').index(),
+							timerDur = o.timerDur/2,
+							timerBarWidth;
+						if (o.viewTimerBar) {
+							// $timerBar[0].style.width
+							timerBarWidth = ($timerBar[0].style.width).replace('%','');
+							timerDur = o.timerDur * (1 - timerBarWidth / 100);
+							//console.log(timerBarWidth, timerDur );
+							$timerBar.stop().animate({'width': '100%'}, timerDur);
+						}
+						slideTimer = setTimeout(function(){c.render(onIndex, nextNumber(onIndex, "next"), "next")}, timerDur);
 					}
 				});
 			}
@@ -175,6 +196,9 @@
 			o.autoplay = true;
 			$playButton.addClass('on');
 			$stopButton.removeClass('on');
+			if (o.viewTimerBar) {
+				$timerBar.stop().css('width', 0).animate({'width': '100%'}, o.timerDur);
+			}
 			slideTimer = setTimeout(function(){c.render(onIndex, nextNumber(onIndex, "next"), "next")}, o.timerDur);
 		};
 
@@ -183,6 +207,9 @@
 			o.autoplay = false;
 			$playButton.removeClass('on');
 			$stopButton.addClass('on');
+			if (o.viewTimerBar) {
+				$timerBar.stop().animate({'width': 0}, 300);
+			}
 		};
 
 		c.render = function (onNum, nextNum, type) {
@@ -213,6 +240,13 @@
 			});
 			if (o.autoplay) {
 				slideTimer = setTimeout(function(){c.render(nextNum, nextNumber(nextNum, "next"), "next")}, o.timerDur);
+			}
+			if (o.viewTimerBar) {
+				if (o.autoplay) {
+					$timerBar.stop().css('width', 0).animate({'width': '100%'}, o.timerDur);
+				} else {
+					$timerBar.stop().css('width', 0);
+				}
 			}
 		};
 
