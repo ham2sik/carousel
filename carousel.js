@@ -1,12 +1,12 @@
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
-		define(function() {
-			return factory(root);
-		});
+		define(['jQuery'],factory);
 	} else if (typeof exports === 'object') {
-		module.exports = factory;
+		module.exports = factory(require('jQuery'));
 	} else {
-		root.JKUIT = root.JKUIT || {}, root.JKUIT=$.extend(root.JKUIT, factory(root));
+		root.JKUIT = jQuery.extend((root.JKUIT || {}), factory(jQuery));
+		// [es6] Object.assign()
+		// root.JKUIT = Object.assign((root.JKUIT || {}), factory(jQuery));
 	}
 })(this, function (root) {
 
