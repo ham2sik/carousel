@@ -4,11 +4,28 @@
 	} else if (typeof exports === 'object') {
 		module.exports = factory(require('jQuery'));
 	} else {
-		root.JKUIT  = root.JKUIT || {};
-		if (typeof Object.assign != 'function') {
-			root.JKUIT = jQuery.extend(root.JKUIT, factory(jQuery));
+		root.uit  = root.uit || {};
+		if (typeof Object.assign == 'function') {
+			// console.log('assign');
+			root.uit = Object.assign(root.uit, factory(jQuery));
+		} else if (typeof jQuery != 'undefined') {
+			// console.log('jQuery');
+			root.uit = jQuery.extend(root.uit, factory(jQuery));
 		} else {
-			root.JKUIT = Object.assign(root.JKUIT, factory(jQuery));
+			// console.log('none');
+			var extend = function() {
+				var extended = {};
+				for(key in arguments) {
+					var argument = arguments[key];
+					for (prop in argument) {
+						if (Object.prototype.hasOwnProperty.call(argument, prop)) {
+							extended[prop] = argument[prop];
+						}
+					}
+				}
+				return extended;
+			};
+			root.uit = extend(root.uit, factory(jQuery));
 		}
 	}
 })(this, function($) {
