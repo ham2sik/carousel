@@ -1,11 +1,15 @@
 (function(root, factory) {
+    var version = {carousel: '1.0.2'};
     root.uit = root.uit || {};
+    root.uit.version = root.uit.version || {};
     if (typeof Object.assign == 'function') {
         // console.log('assign');
         root.uit = Object.assign(root.uit, factory(jQuery));
+        root.uit.version = Object.assign(root.uit.version, version);
     } else {
         // console.log('jQuery');
         root.uit = jQuery.extend(root.uit, factory(jQuery));
+        root.uit.version = jQuery.extend(root.uit.version, version);
     }
 })(this, function($) {
 
@@ -23,20 +27,24 @@
         }
 
         var defaults = {
-            timerDur : 5000,
-            duration : 300,
-            autoplay : true,
-            viewTimerBar : false,
-            slideHover : true,
-            animation : true,
-            wrapper : '.carousel-wrapper',
-            slide : '.carousel-slide',
-            playButton : '.carousel-btn-play',
-            stopButton : '.carousel-btn-stop',
-            nextButton : '.carousel-btn-next',
-            prevButton : '.carousel-btn-prev',
-            pagination : '.carousel-pagination-bullet',
-            timerBar : '.carousel-timer-bar'
+            timerDur: 5000,
+            duration: 300,
+            autoplay: true,
+            viewTimerBar: false,
+            slideHover: true,
+            random: false,
+            animation: true,
+            hoverAnimationBtn: false,
+            hoverAnimationBtn_inValue: '0px',
+            hoverAnimationBtn_outValue: '-25px',
+            wrapper: '.carousel-wrapper',
+            slide: '.carousel-slide',
+            playButton: '.carousel-btn-play',
+            stopButton: '.carousel-btn-stop',
+            nextButton: '.carousel-btn-next',
+            prevButton: '.carousel-btn-prev',
+            pagination: '.carousel-pagination-bullet',
+            timerBar: '.carousel-timer-bar'
         };
         var c = this,
             slideTimer,
@@ -72,13 +80,21 @@
             return num;
         }
 
-        c.version = '1.1.0'; // slide option 추가
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
         c.init = function() {
+            // random view option init
+            var viewNo = 0;
+            if (o.random) {
+                // console.log(getRandom(0, maxNum));
+                viewNo = getRandom(0, maxNum);
+            }
             // slide size view init
             if (maxNum > 0) {
-                $slide.eq(0).addClass('on');
-                $pagination.eq(0).addClass('on');
+                $slide.eq(viewNo).addClass('on');
+                $pagination.eq(viewNo).addClass('on');
             } else if (maxNum == 0) {
                 $slide.eq(0).addClass('on');
                 $pagination.hide();
@@ -96,11 +112,16 @@
                     $timerBar.stop().css('width', 0).animate({'width': '100%'}, o.timerDur);
                 }
                 slideTimer = setTimeout(function(){
-                    c.render(0, nextNumber(0, "next"), "next");
+                    c.render(viewNo, nextNumber(viewNo, "next"), "next");
                 }, o.timerDur);
             } else {
                 $playButton.removeClass('on');
                 $stopButton.addClass('on');
+            }
+
+            // btn(prev next) hover event bind
+            if (o.hoverAnimationBtn) {
+                c.event.hoverAnimation();
             }
 
             // button event init
@@ -123,7 +144,7 @@
         };
 
         c.event = {
-            clickPagination : function() {
+            clickPagination: function() {
                 $pagination.on('click.clickPagination', function() {
                     var clickIndex = $pagination.index($(this));
                     if ($(this).hasClass('on')) {
@@ -132,23 +153,23 @@
                     c.clickRender("next", clickIndex);
                 });
             },
-            clickNext : function() {
+            clickNext: function() {
                 $nextButton.on('click.clickNext', function() {
                     c.clickRender("next");
                 });
             },
-            clickPrev : function() {
+            clickPrev: function() {
                 $prevButton.on('click.clickPrev', function() {
                     c.clickRender("prev");
                 });
             },
-            clickPlay : function() {
+            clickPlay: function() {
                 $playButton.on('click.clickPlay', c.play);
             },
-            clickStop : function() {
+            clickStop: function() {
                 $stopButton.on('click.clickStop', c.stop);
             },
-            hoverSlide : function() {
+            hoverSlide: function() {
                 $slide.on('mouseenter.hoverSlide', function() {
                     clearTimeout(slideTimer);
                     if (o.viewTimerBar) {
@@ -171,6 +192,16 @@
                             c.render(onIndex, nextNumber(onIndex, "next"), "next");
                         }, timerDur);
                     }
+                });
+            },
+            hoverAnimation: function() {
+                $container.on('mouseenter.hoverAnimation', function() {
+                    $prevButton.stop().animate({left: o.hoverAnimationBtn_inValue}, 200);
+                    $nextButton.stop().animate({right: o.hoverAnimationBtn_inValue}, 200);
+                });
+                $container.on('mouseleave.hoverAnimation', function() {
+                    $prevButton.stop().animate({left: o.hoverAnimationBtn_outValue}, 200);
+                    $nextButton.stop().animate({right: o.hoverAnimationBtn_outValue}, 200);
                 });
             }
         };
