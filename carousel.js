@@ -1,17 +1,12 @@
 (function(root, factory) {
-    var version = {carousel: '1.0.2'};
+    var version = {carousel: '1.0.3'};
+
     root.uit = root.uit || {};
+    root.uit = jQuery.extend(root.uit, factory(jQuery));
+
     root.uit.version = root.uit.version || {};
-    if (typeof Object.assign == 'function') {
-        // console.log('assign');
-        root.uit = Object.assign(root.uit, factory(jQuery));
-        root.uit.version = Object.assign(root.uit.version, version);
-    } else {
-        // console.log('jQuery');
-        root.uit = jQuery.extend(root.uit, factory(jQuery));
-        root.uit.version = jQuery.extend(root.uit.version, version);
-    }
-})(this, function($) {
+    root.uit.version = jQuery.extend(root.uit.version, version);
+})(window, function($) {
 
     'use strict';
 
@@ -302,3 +297,15 @@
 
     return uit;
 });
+
+/* uit.carousel Export */
+if (typeof module === 'object' && module.exports) {
+    // Node, CommonJS
+    module.exports = uit.carousel;
+} else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define([], function () {
+        'use strict';
+        return uit.carousel;
+    });
+}

@@ -100,6 +100,16 @@ click 함수에 사용
 
 ## 버전
 
+### 1.0.3
+released 2018-07-06
+
+* AMD, CommonJS modules 지원
+```js
+    var carousel = require('../../module/lib/carousel/carousel');
+
+    ui.event.banner = new carousel('#carousel', { /* ... */ });
+```
+
 ### 1.0.2
 released 2017-09-21
 
