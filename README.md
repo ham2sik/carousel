@@ -1,4 +1,4 @@
-carousel.js
+carousel.js1
 ======================
 PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다. <br>
 따라서 slide 이동은 translate가 아닌 left 값으로 진행되며, swipe 기능이 미포함되어 있습니다.
