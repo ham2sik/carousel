@@ -101,6 +101,14 @@ click 함수에 사용
 
 ## 버전
 
+### 1.0.4
+
+released 2018-09-18
+
+-   fraction 방식 pagination(ex 1/4) 지원으로 아래 옵션값 추가됨
+
+| Name                | Description                            | Default                        |
+
 ### 1.0.3
 released 2018-07-06
 
