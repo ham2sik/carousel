@@ -16,6 +16,7 @@ PC 기반 환경에서 사용할 목적으로 제작한 carousel script입니다
     <div>
     <button type="button" class="carousel-pagination-bullet">Go to slide 1</button>
     <button type="button" class="carousel-pagination-bullet">Go to slide 2</button>
+    <span class="carousel-pagination-current"></span> / <span class="carousel-pagination-total"></span><!-- ver 1.0.4에 추가된 pagination_fraction 코드 -->
     ...
     </div>
     <ul class="carousel-wrapper">
